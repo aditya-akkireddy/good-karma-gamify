@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
@@ -7,17 +6,32 @@ import { ServiceCategories } from "@/components/service-categories";
 import { CreateRequest } from "@/components/create-request";
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
+import { useTokens } from "@/contexts/TokenContext"; // ✅ for token manipulation
+import { useToast } from "@/hooks/use-toast";        // ✅ for notification
 
 export type ServiceCategory = "parcel" | "notes" | "study" | "all";
 
 const GoodDeeds = () => {
   const [activeCategory, setActiveCategory] = useState<ServiceCategory>("all");
   const [showCreateRequest, setShowCreateRequest] = useState(false);
-  
+
+  const { addTokens } = useTokens();   // ✅ Add tokens to user
+  const { toast } = useToast();        // ✅ Show confirmation
+
+  // Example function to reward tokens for completing a deed
+  const handleCompleteRequest = () => {
+    const reward = 10;
+    addTokens(reward);
+    toast({
+      title: "Good deed completed!",
+      description: `You've earned ${reward} tokens.`,
+    });
+  };
+
   if (showCreateRequest) {
     return <CreateRequest onClose={() => setShowCreateRequest(false)} />;
   }
-  
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -41,13 +55,17 @@ const GoodDeeds = () => {
                 Create Request
               </Button>
             </div>
-            
+
             <ServiceCategories 
               activeCategory={activeCategory} 
               onSelectCategory={setActiveCategory} 
             />
-            
-            <ServiceRequests category={activeCategory} />
+
+            {/* You can pass `handleCompleteRequest` to ServiceRequests to trigger it on success */}
+            <ServiceRequests 
+              category={activeCategory} 
+              onComplete={handleCompleteRequest} // Pass reward logic down
+            />
           </div>
         </section>
       </main>
