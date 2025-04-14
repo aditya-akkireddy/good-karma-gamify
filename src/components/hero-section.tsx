@@ -1,6 +1,7 @@
 
 import { ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const oneLiners = [
   "Return. Earn. Redeem.",
@@ -55,12 +56,12 @@ export function HeroSection() {
 
         {/* CTAs */}
         <div className="flex flex-col sm:flex-row gap-4 w-full max-w-md justify-center animate-scale-up">
-          <a href="#join" className="btn-primary">
-            Join Now <ArrowRight className="w-4 h-4" />
-          </a>
-          <a href="#how-it-works" className="btn-secondary">
-            How It Works
-          </a>
+          <Link to="/good-deeds" className="btn-primary">
+            Get Started <ArrowRight className="w-4 h-4" />
+          </Link>
+          <Link to="/about" className="btn-secondary">
+            Learn More
+          </Link>
         </div>
       </div>
     </section>
