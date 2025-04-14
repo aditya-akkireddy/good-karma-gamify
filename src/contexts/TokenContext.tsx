@@ -1,9 +1,9 @@
-
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
 type TokenContextType = {
   tokens: number;
   addTokens: (amount: number) => void;
+  deductTokens: (amount: number) => void;
   isLoggedIn: boolean;
   login: () => void;
   logout: () => void;
@@ -19,7 +19,7 @@ export function TokenProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const loginStatus = localStorage.getItem("isLoggedIn");
     setIsLoggedIn(loginStatus === "true");
-    
+
     if (loginStatus === "true") {
       const storedTokens = localStorage.getItem("userTokens");
       setTokens(storedTokens ? parseInt(storedTokens) : 0);
@@ -37,6 +37,10 @@ export function TokenProvider({ children }: { children: ReactNode }) {
     setTokens(prev => prev + amount);
   };
 
+  const deductTokens = (amount: number) => {
+    setTokens(prev => Math.max(0, prev - amount)); // prevents going negative
+  };
+
   const login = () => {
     setIsLoggedIn(true);
     localStorage.setItem("isLoggedIn", "true");
@@ -48,7 +52,7 @@ export function TokenProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <TokenContext.Provider value={{ tokens, addTokens, isLoggedIn, login, logout }}>
+    <TokenContext.Provider value={{ tokens, addTokens, deductTokens, isLoggedIn, login, logout }}>
       {children}
     </TokenContext.Provider>
   );
@@ -56,8 +60,6 @@ export function TokenProvider({ children }: { children: ReactNode }) {
 
 export function useTokens() {
   const context = useContext(TokenContext);
-  if (context === undefined) {
-    throw new Error("useTokens must be used within a TokenProvider");
-  }
+  if (!context) throw new Error("useTokens must be used within a TokenProvider");
   return context;
 }
