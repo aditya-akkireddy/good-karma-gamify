@@ -34,6 +34,10 @@
     --ring: 278 73% 60%;
 
     --radius: 0.75rem;
+    
+    /* Adding token display values */
+    --token-bg: 48 96% 53%;
+    --token-text: 278 73% 24%;
   }
 
   .dark {
@@ -64,6 +68,10 @@
     --border: 260 43% 30%;
     --input: 260 43% 30%;
     --ring: 278 73% 76%;
+    
+    /* Fixing token display in dark mode */
+    --token-bg: 48 86% 65%;
+    --token-text: 0 0% 15%;
   }
 }
 
@@ -105,5 +113,10 @@
   
   .glassmorphism {
     @apply bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl shadow-xl;
+  }
+  
+  /* Adding token display styles */
+  .token-display {
+    @apply bg-[hsl(var(--token-bg))] text-[hsl(var(--token-text))] font-medium px-3 py-1 rounded-full flex items-center gap-1;
   }
 }

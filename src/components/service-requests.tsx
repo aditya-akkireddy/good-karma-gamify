@@ -167,7 +167,7 @@ export function ServiceRequests({ category }: { category: ServiceCategory }) {
                   <span>{request.time}</span>
                 </div>
                 <div className="flex items-center gap-2 mt-4">
-                  <div className="bg-accent/10 text-accent-foreground px-3 py-1 rounded-full flex items-center gap-1">
+                  <div className="token-display">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
                     </svg>
@@ -193,7 +193,7 @@ export function ServiceRequests({ category }: { category: ServiceCategory }) {
       ) : (
         <div className="col-span-full flex flex-col items-center justify-center py-12">
           <p className="text-muted-foreground text-center mb-4">No requests found in this category.</p>
-          <Button variant="outline">Create a Request</Button>
+          <Button variant="outline" onClick={() => {}}>Create a Request</Button>
         </div>
       )}
     </div>
