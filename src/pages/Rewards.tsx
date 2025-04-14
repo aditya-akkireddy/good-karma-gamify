@@ -58,35 +58,19 @@ const Rewards = () => {
               />
               
               <RewardCard 
-                title="Campus Cafe Coffee"
-                description="Free coffee at the Campus Cafe"
-                cost={30}
+                title="UnderBelly Canteen Coupon"
+                description="₹100 discount coupon for UnderBelly Canteen"
+                cost={45}
                 imageSrc="/placeholder.svg"
-                onRedeem={() => handleRedeem("Campus Cafe Coffee", 30)}
+                onRedeem={() => handleRedeem("UnderBelly Canteen Coupon", 45)}
               />
               
               <RewardCard 
-                title="Study Room Booking"
-                description="Priority booking for premium study rooms"
-                cost={100}
+                title="Safal Canteen Coupon"
+                description="₹100 discount coupon for Safal Canteen"
+                cost={40}
                 imageSrc="/placeholder.svg"
-                onRedeem={() => handleRedeem("Study Room Booking", 100)}
-              />
-              
-              <RewardCard 
-                title="Printing Credits"
-                description="50 pages of free printing at the campus center"
-                cost={60}
-                imageSrc="/placeholder.svg"
-                onRedeem={() => handleRedeem("Printing Credits", 60)}
-              />
-              
-              <RewardCard 
-                title="Gym Pass"
-                description="One-day pass to the premium campus gym"
-                cost={80}
-                imageSrc="/placeholder.svg"
-                onRedeem={() => handleRedeem("Gym Pass", 80)}
+                onRedeem={() => handleRedeem("Safal Canteen Coupon", 40)}
               />
             </div>
           </div>

@@ -25,12 +25,12 @@ const mockRequests: ServiceRequest[] = [
     id: "1",
     type: "parcel",
     title: "Pick up package from reception",
-    description: "Need someone to collect my Amazon package from the campus reception and bring it to Hostel Block C.",
-    location: "Campus Reception → Hostel Block C",
+    description: "Need someone to collect my Amazon package from the campus reception and bring it to Hostel Block 1.",
+    location: "Campus Reception → Hostel Block 1",
     date: "Apr 15, 2025",
     time: "3:00 PM - 5:00 PM",
     tokenReward: 20,
-    requester: "Alex"
+    requester: "Harsh"
   },
   {
     id: "2",
@@ -52,7 +52,7 @@ const mockRequests: ServiceRequest[] = [
     date: "Apr 18, 2025",
     time: "6:00 PM - 8:00 PM",
     tokenReward: 25,
-    requester: "Jordan"
+    requester: "Akshaya"
   },
   {
     id: "4",
@@ -63,7 +63,7 @@ const mockRequests: ServiceRequest[] = [
     date: "Apr 16, 2025",
     time: "12:00 PM - 2:00 PM",
     tokenReward: 18,
-    requester: "Taylor"
+    requester: "Tanish"
   },
   {
     id: "5",
@@ -74,7 +74,7 @@ const mockRequests: ServiceRequest[] = [
     date: "Apr 15, 2025",
     time: "By 10:00 PM",
     tokenReward: 15,
-    requester: "Morgan"
+    requester: "Mahesh"
   },
   {
     id: "6",
@@ -85,7 +85,7 @@ const mockRequests: ServiceRequest[] = [
     date: "Apr 17, 2025",
     time: "4:00 PM - 6:00 PM",
     tokenReward: 30,
-    requester: "Casey"
+    requester: "Prajwal"
   }
 ];
 
