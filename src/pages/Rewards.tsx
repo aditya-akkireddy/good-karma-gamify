@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
@@ -7,7 +6,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useTokens } from "@/contexts/TokenContext";
 
 const Rewards = () => {
-  const { tokens } = useTokens();
+  const { tokens, deductTokens } = useTokens(); // Added deductTokens
   const { toast } = useToast();
 
   const handleRedeem = (rewardName: string, cost: number) => {
@@ -20,7 +19,10 @@ const Rewards = () => {
       return;
     }
 
-    // In a real app, we would call an API to redeem the reward
+    // Deduct tokens after successful redemption
+    deductTokens(cost);
+
+    // Simulate reward redemption
     toast({
       title: "Reward Redeemed!",
       description: `You've successfully redeemed ${rewardName}. Check your email for details.`,
