@@ -1,12 +1,29 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import { useEffect } from "react";
+import { Navbar } from "@/components/navbar";
+import { HeroSection } from "@/components/hero-section";
+import { HowItWorks } from "@/components/how-it-works";
+import { Leaderboard } from "@/components/leaderboard";
+import { Sponsors } from "@/components/sponsors";
+import { CallToAction } from "@/components/call-to-action";
+import { Footer } from "@/components/footer";
 
 const Index = () => {
+  // Set dark mode as default on initial load
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme") || "dark";
+    document.documentElement.classList.toggle("dark", savedTheme === "dark");
+  }, []);
+  
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen flex flex-col">
+      <Navbar />
+      <HeroSection />
+      <HowItWorks />
+      <Leaderboard />
+      <Sponsors />
+      <CallToAction />
+      <Footer />
     </div>
   );
 };
