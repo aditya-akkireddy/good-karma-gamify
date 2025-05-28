@@ -7,7 +7,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyC6EH4rS2KB1tlKDA79K8tc25rAds8zaGo",
   authDomain: "deeditup-a7512.firebaseapp.com",
   projectId: "deeditup-a7512",
-  storageBucket: "deeditup-a7512.firebasestorage.app",
+  storageBucket: "deeditup-a7512.appspot.com"
   messagingSenderId: "655197318756",
   appId: "1:655197318756:web:df6726fd12e5b22387f971",
   measurementId: "G-HG50P3N2GV"
