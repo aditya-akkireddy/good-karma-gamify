@@ -5,6 +5,7 @@ import { auth } from './firebase';
 
 function Login() {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const handleLogin = async () => {
     const provider = new GoogleAuthProvider();
@@ -30,10 +31,13 @@ function Login() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
+      setLoading(false);
     });
 
-    return () => unsubscribe(); // cleanup on unmount
+    return () => unsubscribe();
   }, []);
+
+  if (loading) return <div style={{ textAlign: 'center', marginTop: '2rem' }}>Checking session...</div>;
 
   return (
     <div style={{ textAlign: 'center', marginTop: '2rem' }}>
