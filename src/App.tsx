@@ -15,6 +15,7 @@ import About from "./pages/About";
 import Events from "./pages/Events";
 import Login from "./pages/Login"; 
 
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -33,6 +34,7 @@ const App = () => (
             <Route path="/login" element={<Login />} /> {/* ✅ NEW ROUTE */}
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
+            
           </Routes>
         </BrowserRouter>
       </TokenProvider>
