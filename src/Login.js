@@ -1,14 +1,11 @@
-// src/Login.js
 import React, { useState, useEffect } from 'react';
-import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from 'firebase/auth';
-import { auth } from './firebase';
+import { signInWithPopup, onAuthStateChanged, signOut } from 'firebase/auth';
+import { auth, provider } from './firebase'; // ✅ make sure provider is exported from firebase.js
 
 function Login() {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
 
   const handleLogin = async () => {
-    const provider = new GoogleAuthProvider();
     try {
       const result = await signInWithPopup(auth, provider);
       setUser(result.user);
@@ -31,13 +28,10 @@ function Login() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      setLoading(false);
     });
 
-    return () => unsubscribe();
+    return () => unsubscribe(); // cleanup listener on unmount
   }, []);
-
-  if (loading) return <div style={{ textAlign: 'center', marginTop: '2rem' }}>Checking session...</div>;
 
   return (
     <div style={{ textAlign: 'center', marginTop: '2rem' }}>
