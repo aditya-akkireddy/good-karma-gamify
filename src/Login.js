@@ -34,25 +34,32 @@ function Login() {
     }
   };
 
-  return (
-    <div style={{ textAlign: 'center', marginTop: '3rem' }}>
-      {!user ? (
-        <>
-          <h2>Login to DeeditUp</h2>
-          <button onClick={handleLogin} style={{ padding: '0.5rem 1rem' }}>
-            Sign in with Google
-          </button>
-        </>
-      ) : (
-        <>
-          <h2>Welcome, {user.displayName || 'User'} 👋</h2>
-          <p>Email: {user.email}</p>
-          <button onClick={handleLogout} style={{ padding: '0.5rem 1rem', marginTop: '1rem' }}>
-            Logout
-          </button>
-        </>
-      )}
-    </div>
+  if (!user) {
+    return React.createElement(
+      'div',
+      { style: { textAlign: 'center', marginTop: '3rem' } },
+      React.createElement('h2', null, 'Login to DeeditUp'),
+      React.createElement(
+        'button',
+        { onClick: handleLogin, style: { padding: '0.5rem 1rem' } },
+        'Sign in with Google'
+      )
+    );
+  }
+
+  return React.createElement(
+    'div',
+    { style: { textAlign: 'center', marginTop: '3rem' } },
+    React.createElement('h2', null, `Welcome, ${user.displayName || 'User'} 👋`),
+    React.createElement('p', null, `Email: ${user.email}`),
+    React.createElement(
+      'button',
+      {
+        onClick: handleLogout,
+        style: { padding: '0.5rem 1rem', marginTop: '1rem' }
+      },
+      'Logout'
+    )
   );
 }
 
