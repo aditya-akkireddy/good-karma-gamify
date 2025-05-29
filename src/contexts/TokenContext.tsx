@@ -1,12 +1,20 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { auth } from "@/firebase"; // Adjust path if needed
+import {
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+  User,
+} from "firebase/auth";
 
 type TokenContextType = {
   tokens: number;
   addTokens: (amount: number) => void;
   deductTokens: (amount: number) => void;
   isLoggedIn: boolean;
-  login: () => void;
-  logout: () => void;
+  login: (email: string, password: string) => Promise<void>;
+  logout: () => Promise<void>;
+  user: User | null;
 };
 
 const TokenContext = createContext<TokenContextType | undefined>(undefined);
@@ -14,19 +22,24 @@ const TokenContext = createContext<TokenContextType | undefined>(undefined);
 export function TokenProvider({ children }: { children: ReactNode }) {
   const [tokens, setTokens] = useState(0);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
 
-  // Initialize from localStorage
   useEffect(() => {
-    const loginStatus = localStorage.getItem("isLoggedIn");
-    setIsLoggedIn(loginStatus === "true");
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      setUser(firebaseUser);
+      if (firebaseUser) {
+        setIsLoggedIn(true);
+        const storedTokens = localStorage.getItem("userTokens");
+        setTokens(storedTokens ? parseInt(storedTokens) : 50); // default 50 tokens
+      } else {
+        setIsLoggedIn(false);
+        setTokens(0);
+      }
+    });
 
-    if (loginStatus === "true") {
-      const storedTokens = localStorage.getItem("userTokens");
-      setTokens(storedTokens ? parseInt(storedTokens) : 0);
-    }
+    return () => unsubscribe();
   }, []);
 
-  // Update localStorage when tokens change
   useEffect(() => {
     if (isLoggedIn) {
       localStorage.setItem("userTokens", tokens.toString());
@@ -34,25 +47,28 @@ export function TokenProvider({ children }: { children: ReactNode }) {
   }, [tokens, isLoggedIn]);
 
   const addTokens = (amount: number) => {
-    setTokens(prev => prev + amount);
+    setTokens((prev) => prev + amount);
   };
 
   const deductTokens = (amount: number) => {
-    setTokens(prev => Math.max(0, prev - amount)); // prevents going negative
+    setTokens((prev) => Math.max(0, prev - amount));
   };
 
-  const login = () => {
-    setIsLoggedIn(true);
-    localStorage.setItem("isLoggedIn", "true");
+  const login = async (email: string, password: string) => {
+    await signInWithEmailAndPassword(auth, email, password);
   };
 
-  const logout = () => {
+  const logout = async () => {
+    await signOut(auth);
     setIsLoggedIn(false);
-    localStorage.setItem("isLoggedIn", "false");
+    setTokens(0);
+    localStorage.removeItem("userTokens");
   };
 
   return (
-    <TokenContext.Provider value={{ tokens, addTokens, deductTokens, isLoggedIn, login, logout }}>
+    <TokenContext.Provider
+      value={{ tokens, addTokens, deductTokens, isLoggedIn, login, logout, user }}
+    >
       {children}
     </TokenContext.Provider>
   );
