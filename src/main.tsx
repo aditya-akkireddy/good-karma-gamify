@@ -2,11 +2,13 @@ import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
 
-// 👇 import required providers
 import { BrowserRouter } from "react-router-dom";
-import { TokenProvider } from "./contexts/TokenContext"; // make sure the path is correct
+import { TokenProvider } from "./contexts/TokenContext"; // ✅ ensure this path is correct
 
-createRoot(document.getElementById("root")!).render(
+const rootElement = document.getElementById("root");
+if (!rootElement) throw new Error("Failed to find root element");
+
+createRoot(rootElement).render(
   <BrowserRouter>
     <TokenProvider>
       <App />
