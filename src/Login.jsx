@@ -1,11 +1,7 @@
+// src/Login.jsx
 import React, { useEffect, useState } from 'react';
-import {
-  GoogleAuthProvider,
-  signInWithPopup,
-  onAuthStateChanged,
-  signOut
-} from 'firebase/auth';
-import { auth } from './firebase';
+import { auth, provider } from './firebase';
+import { signInWithPopup, onAuthStateChanged, signOut } from 'firebase/auth';
 
 function Login() {
   const [user, setUser] = useState(null);
@@ -18,11 +14,11 @@ function Login() {
   }, []);
 
   const handleLogin = async () => {
-    const provider = new GoogleAuthProvider();
     try {
-      await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(auth, provider);
+      console.log("User signed in:", result.user);
     } catch (error) {
-      console.error('Login error:', error.message);
+      console.error('Login error:', error);
     }
   };
 
@@ -30,36 +26,22 @@ function Login() {
     try {
       await signOut(auth);
     } catch (error) {
-      console.error('Logout error:', error.message);
+      console.error('Logout error:', error);
     }
   };
 
-  if (!user) {
-    return React.createElement(
-      'div',
-      { style: { textAlign: 'center', marginTop: '3rem' } },
-      React.createElement('h2', null, 'Login to DeeditUp'),
-      React.createElement(
-        'button',
-        { onClick: handleLogin, style: { padding: '0.5rem 1rem' } },
-        'Sign in with Google'
-      )
-    );
-  }
-
-  return React.createElement(
-    'div',
-    { style: { textAlign: 'center', marginTop: '3rem' } },
-    React.createElement('h2', null, `Welcome, ${user.displayName || 'User'} 👋`),
-    React.createElement('p', null, `Email: ${user.email}`),
-    React.createElement(
-      'button',
-      {
-        onClick: handleLogout,
-        style: { padding: '0.5rem 1rem', marginTop: '1rem' }
-      },
-      'Logout'
-    )
+  return (
+    <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+      {!user ? (
+        <button onClick={handleLogin}>Sign in with Google</button>
+      ) : (
+        <>
+          <h3>Welcome, {user.displayName}</h3>
+          <p>{user.email}</p>
+          <button onClick={handleLogout}>Logout</button>
+        </>
+      )}
+    </div>
   );
 }
 
