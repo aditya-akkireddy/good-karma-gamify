@@ -13,7 +13,7 @@ import GoodDeeds from "./pages/GoodDeeds";
 import Rewards from "./pages/Rewards";
 import About from "./pages/About";
 import Events from "./pages/Events";
-import Login from "./Login"; 
+import Login from "./Login.jsx"; 
 
 
 const queryClient = new QueryClient();
