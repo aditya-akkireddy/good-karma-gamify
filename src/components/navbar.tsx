@@ -11,23 +11,64 @@ export function Navbar() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const { isLoggedIn, login, logout, tokens } = useTokens();
   const location = useLocation();
   const navigate = useNavigate();
 
-  const fakeLogin = () => {
-    if (email === "user@example.com" && password === "password") {
-      login(); // You should replace this with your real logic
+  // Simulate login API call
+  const loginUser = async (email: string, password: string) => {
+    // This is where you'd replace with actual API call
+    return new Promise<{ success: boolean; tokens?: string; message?: string }>(
+      (resolve) => {
+        setTimeout(() => {
+          if (email === "user@example.com" && password === "password") {
+            resolve({ success: true, tokens: "100" }); // example tokens
+          } else {
+            resolve({ success: false, message: "Invalid email or password." });
+          }
+        }, 1500);
+      }
+    );
+  };
+
+  const handleLogin = async () => {
+    if (!email || !password) {
       toast({
-        title: "Login Successful",
-        description: "Welcome back!",
+        title: "Validation Error",
+        description: "Please enter both email and password.",
+        variant: "destructive",
       });
-      setIsLoginModalOpen(false);
-    } else {
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const response = await loginUser(email, password);
+      setIsLoading(false);
+      if (response.success) {
+        login(response.tokens ?? "");
+        toast({
+          title: "Login Successful",
+          description: "Welcome back!",
+        });
+        setIsLoginModalOpen(false);
+        setEmail("");
+        setPassword("");
+        navigate("/"); // Redirect after login if you want
+      } else {
+        toast({
+          title: "Login Failed",
+          description: response.message || "Something went wrong.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      setIsLoading(false);
       toast({
-        title: "Login Failed",
-        description: "Invalid email or password.",
+        title: "Error",
+        description: "An unexpected error occurred.",
         variant: "destructive",
       });
     }
@@ -39,6 +80,7 @@ export function Navbar() {
       title: "Logged Out",
       description: "You have been logged out.",
     });
+    navigate("/"); // Optionally redirect after logout
   };
 
   const isActive = (path: string) => {
@@ -57,10 +99,18 @@ export function Navbar() {
         </div>
 
         <nav className="hidden md:flex items-center gap-6">
-          <Link to="/" className={`text-sm ${isActive('/')}`}>Home</Link>
-          <Link to="/good-deeds" className={`text-sm ${isActive('/good-deeds')}`}>Good Deeds</Link>
-          <Link to="/rewards" className={`text-sm ${isActive('/rewards')}`}>Rewards</Link>
-          <Link to="/about" className={`text-sm ${isActive('/about')}`}>About</Link>
+          <Link to="/" className={`text-sm ${isActive("/")}`}>
+            Home
+          </Link>
+          <Link to="/good-deeds" className={`text-sm ${isActive("/good-deeds")}`}>
+            Good Deeds
+          </Link>
+          <Link to="/rewards" className={`text-sm ${isActive("/rewards")}`}>
+            Rewards
+          </Link>
+          <Link to="/about" className={`text-sm ${isActive("/about")}`}>
+            About
+          </Link>
 
           {isLoggedIn && (
             <div className="bg-accent/10 text-accent-foreground px-3 py-1 rounded-full flex items-center gap-1">
@@ -98,10 +148,34 @@ export function Navbar() {
       {isMenuOpen && (
         <div className="md:hidden absolute top-16 inset-x-0 bg-background border-b border-border animate-fade-in">
           <nav className="container py-4 flex flex-col space-y-4">
-            <Link to="/" className={`text-sm ${isActive('/')}`} onClick={() => setIsMenuOpen(false)}>Home</Link>
-            <Link to="/good-deeds" className={`text-sm ${isActive('/good-deeds')}`} onClick={() => setIsMenuOpen(false)}>Good Deeds</Link>
-            <Link to="/rewards" className={`text-sm ${isActive('/rewards')}`} onClick={() => setIsMenuOpen(false)}>Rewards</Link>
-            <Link to="/about" className={`text-sm ${isActive('/about')}`} onClick={() => setIsMenuOpen(false)}>About</Link>
+            <Link
+              to="/"
+              className={`text-sm ${isActive("/")}`}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Home
+            </Link>
+            <Link
+              to="/good-deeds"
+              className={`text-sm ${isActive("/good-deeds")}`}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Good Deeds
+            </Link>
+            <Link
+              to="/rewards"
+              className={`text-sm ${isActive("/rewards")}`}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Rewards
+            </Link>
+            <Link
+              to="/about"
+              className={`text-sm ${isActive("/about")}`}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              About
+            </Link>
 
             {isLoggedIn && (
               <div className="flex items-center px-2 py-2">
@@ -152,6 +226,7 @@ export function Navbar() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-4 py-2 border rounded-lg bg-muted text-muted-foreground"
+                disabled={isLoading}
               />
               <input
                 type="password"
@@ -159,19 +234,22 @@ export function Navbar() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full px-4 py-2 border rounded-lg bg-muted text-muted-foreground"
+                disabled={isLoading}
               />
               <div className="flex justify-end gap-2">
                 <button
                   onClick={() => setIsLoginModalOpen(false)}
                   className="px-4 py-2 rounded-lg border border-muted-foreground text-muted-foreground"
+                  disabled={isLoading}
                 >
                   Cancel
                 </button>
                 <button
-                  onClick={fakeLogin}
+                  onClick={handleLogin}
                   className="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg"
+                  disabled={isLoading}
                 >
-                  Login
+                  {isLoading ? "Logging in..." : "Login"}
                 </button>
               </div>
             </div>
