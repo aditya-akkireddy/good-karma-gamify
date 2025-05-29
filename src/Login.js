@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from 'firebase/auth';
+import {
+  GoogleAuthProvider,
+  signInWithPopup,
+  onAuthStateChanged,
+  signOut
+} from 'firebase/auth';
 import { auth } from './firebase';
 
 function Login() {
@@ -17,7 +22,7 @@ function Login() {
     try {
       await signInWithPopup(auth, provider);
     } catch (error) {
-      console.error('Login error:', error);
+      console.error('Login error:', error.message);
     }
   };
 
@@ -25,19 +30,27 @@ function Login() {
     try {
       await signOut(auth);
     } catch (error) {
-      console.error('Logout error:', error);
+      console.error('Logout error:', error.message);
     }
   };
 
   return (
-    <div>
+    <div style={{ textAlign: 'center', marginTop: '3rem' }}>
       {!user ? (
-        <button onClick={handleLogin}>Sign in with Google</button>
+        <>
+          <h2>Login to DeeditUp</h2>
+          <button onClick={handleLogin} style={{ padding: '0.5rem 1rem' }}>
+            Sign in with Google
+          </button>
+        </>
       ) : (
-        <div>
-          <p>Welcome, {user.displayName}</p>
-          <button onClick={handleLogout}>Logout</button>
-        </div>
+        <>
+          <h2>Welcome, {user.displayName || 'User'} 👋</h2>
+          <p>Email: {user.email}</p>
+          <button onClick={handleLogout} style={{ padding: '0.5rem 1rem', marginTop: '1rem' }}>
+            Logout
+          </button>
+        </>
       )}
     </div>
   );
